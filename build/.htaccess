@@ -1,0 +1,74 @@
+# Seven Roofing - Static Site
+# Generated: 2026-04-15
+
+# Force HTTPS
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Force non-www
+RewriteCond %{HTTP_HOST} ^www\.sevenroofing\.com\.au$ [NC]
+RewriteRule ^(.*)$ https://sevenroofing.com.au/$1 [L,R=301]
+
+# Redirect index.html to clean directory URL (prevents duplicate content)
+RewriteRule ^index\.html$ / [R=301,L]
+RewriteRule ^(.+)/index\.html$ /$1/ [R=301,L]
+
+# Trailing slash enforcement (skip files)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_URI} !(.*)/$
+RewriteRule ^(.*)$ /$1/ [L,R=301]
+
+# WordPress cleanup redirects
+Redirect 301 /wp-admin https://sevenroofing.com.au/
+Redirect 301 /wp-login.php https://sevenroofing.com.au/
+Redirect 301 /xmlrpc.php https://sevenroofing.com.au/
+RedirectMatch 301 ^/wp-content/(.*) https://sevenroofing.com.au/
+RedirectMatch 301 ^/feed(.*) https://sevenroofing.com.au/
+RedirectMatch 301 ^/wp-json(.*) https://sevenroofing.com.au/
+RedirectMatch 301 ^/author(.*) https://sevenroofing.com.au/
+
+# Serve XML sitemaps with correct content type
+<FilesMatch "\.(xml)$">
+    Header set Content-Type "application/xml; charset=UTF-8"
+</FilesMatch>
+
+# Custom 404
+ErrorDocument 404 /404.html
+
+# Browser caching
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/html "access plus 1 hour"
+    ExpiresByType text/css "access plus 1 year"
+    ExpiresByType application/javascript "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/avif "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+    ExpiresByType font/woff "access plus 1 year"
+</IfModule>
+
+# Immutable cache for versioned assets
+<IfModule mod_headers.c>
+    <FilesMatch "\.(css|js|woff2?|png|jpe?g|webp|avif|svg|gif)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+</IfModule>
+
+# Gzip compression
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css application/javascript
+    AddOutputFilterByType DEFLATE application/json image/svg+xml font/woff
+</IfModule>
+
+# Security headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+    Header set X-XSS-Protection "1; mode=block"
+</IfModule>

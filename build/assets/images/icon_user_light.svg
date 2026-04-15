@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="81" height="81" viewBox="0 0 81 81">
+  <defs>
+    <clipPath id="clip-path">
+      <circle id="Ellipse_27" data-name="Ellipse 27" cx="40.5" cy="40.5" r="40.5" transform="translate(189 463)" fill="#153764"/>
+    </clipPath>
+  </defs>
+  <g id="Mask_Group_17" data-name="Mask Group 17" transform="translate(-189 -463)" clip-path="url(#clip-path)">
+    <g id="user" transform="translate(197 478)" opacity="0.38">
+      <g id="Group_165" data-name="Group 165" transform="translate(0)">
+        <path id="Path_222" data-name="Path 222" d="M56.335,42.665A32.873,32.873,0,0,0,43.794,34.8a19.078,19.078,0,1,0-21.589,0A33.052,33.052,0,0,0,0,66H5.156a27.844,27.844,0,1,1,55.687,0H66A32.785,32.785,0,0,0,56.335,42.665ZM33,33A13.922,13.922,0,1,1,46.922,19.078,13.938,13.938,0,0,1,33,33Z" transform="translate(0)" fill="#fff"/>
+      </g>
+    </g>
+  </g>
+</svg>

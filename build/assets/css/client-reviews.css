@@ -1,0 +1,296 @@
+/* ==========================================================================
+   Client Reviews Component - Seven Roofing
+   Self-contained styles for the reusable Google Reviews carousel.
+   ========================================================================== */
+
+.sr-reviews {
+    padding: 30px 0 50px;
+}
+
+.sr-reviews-slider {
+    margin: 0 8px;
+    position: relative;
+}
+
+.sr-reviews-slider .slick-list {
+    overflow: hidden;
+    padding: 5px 0 1px;
+}
+
+.sr-reviews-slider .slick-track {
+    display: flex;
+}
+
+.sr-reviews-slider .slick-slide {
+    padding: 0 8px;
+    height: auto;
+}
+
+.sr-reviews-slider .slick-slide > div {
+    height: 100%;
+}
+
+/* Review Card */
+.sr-review-card {
+    background: #fff;
+    border: 1px solid #d9d9d9;
+    border-radius: 12px;
+    padding: 20px;
+    position: relative;
+    transition: transform 300ms ease-out;
+    height: 100%;
+    display: flex !important;
+    flex-direction: column;
+}
+
+@media (min-width: 480px) {
+    .sr-review-card:hover {
+        transform: translateY(-5px);
+    }
+}
+
+/* Header: avatar + name + google icon */
+.sr-review-header {
+    display: flex;
+    align-items: center;
+    position: relative;
+    margin-bottom: 11px;
+}
+
+.sr-review-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 12px;
+    flex-shrink: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 15px;
+    color: #fff;
+    background: #4285f4;
+}
+
+.sr-review-avatar img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: top;
+    display: block;
+}
+
+.sr-review-meta {
+    flex: 1;
+    min-width: 0;
+}
+
+.sr-review-name {
+    font-weight: 600;
+    font-size: 15px;
+    color: #000;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding-right: 25px;
+    line-height: 1.4;
+}
+
+.sr-google-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.sr-google-badge svg {
+    width: 20px;
+    height: 20px;
+    display: block;
+}
+
+/* Stars */
+.sr-review-stars {
+    display: flex;
+    align-items: center;
+    gap: 1px;
+    margin-top: 3px;
+    margin-bottom: 11px;
+    line-height: 0;
+}
+
+.sr-review-stars svg {
+    width: 17px;
+    height: 17px;
+    flex-shrink: 0;
+}
+
+.sr-verified-badge {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    margin-left: 7px;
+    flex-shrink: 0;
+    vertical-align: middle;
+}
+
+.sr-verified-badge svg {
+    width: 15px;
+    height: 15px;
+}
+
+/* Review text */
+.sr-review-text {
+    font-size: 15px;
+    line-height: 21.75px;
+    color: #000;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    height: 87px;
+    text-align: left;
+    flex-grow: 1;
+}
+
+.sr-review-text.sr-expanded {
+    -webkit-line-clamp: unset;
+    height: auto;
+    overflow: visible;
+}
+
+/* Read more */
+.sr-review-readmore {
+    display: block;
+    padding-top: 8px;
+    font-size: 13.5px;
+    color: #000;
+    opacity: 0.5;
+    cursor: pointer;
+    text-decoration: none;
+    transition: opacity 200ms ease;
+    text-align: left;
+}
+
+.sr-review-readmore:hover {
+    opacity: 1;
+    text-decoration: underline;
+}
+
+/* Carousel Navigation Arrows */
+.sr-reviews-slider .slick-prev,
+.sr-reviews-slider .slick-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 30px;
+    background: #fff;
+    border: 1px solid #d9d9d9;
+    border-radius: 50%;
+    z-index: 2;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    font-size: 0;
+    line-height: 0;
+    transition: all 200ms ease-out;
+    outline: none;
+}
+
+.sr-reviews-slider .slick-prev:hover,
+.sr-reviews-slider .slick-next:hover {
+    background: #4d4d4d;
+    border-color: #272727;
+}
+
+.sr-reviews-slider .slick-prev::before,
+.sr-reviews-slider .slick-next::before {
+    content: '';
+    display: block;
+    width: 10px;
+    height: 10px;
+    border-bottom: 2px solid #5e5e5e;
+    border-left: 2px solid #5e5e5e;
+    transition: border-color 200ms ease-out;
+}
+
+.sr-reviews-slider .slick-prev:hover::before,
+.sr-reviews-slider .slick-next:hover::before {
+    border-color: #fff;
+}
+
+.sr-reviews-slider .slick-prev {
+    left: -7px;
+}
+
+.sr-reviews-slider .slick-prev::before {
+    transform: rotate(45deg);
+    margin-left: 3px;
+}
+
+.sr-reviews-slider .slick-next {
+    right: -7px;
+}
+
+.sr-reviews-slider .slick-next::before {
+    transform: rotate(-135deg);
+    margin-right: 3px;
+}
+
+/* Mobile dot navigation */
+.sr-reviews-slider .slick-dots {
+    display: none;
+    list-style: none;
+    margin: 20px auto 0;
+    padding: 0;
+    text-align: center;
+}
+
+.sr-reviews-slider .slick-dots li {
+    display: inline-block;
+    margin: 0 4px;
+    line-height: 0;
+    font-size: 0;
+}
+
+.sr-reviews-slider .slick-dots li button {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(94, 94, 94, 0.35);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-size: 0;
+    line-height: 0;
+    outline: none;
+    transition: background 200ms ease;
+}
+
+.sr-reviews-slider .slick-dots li.slick-active button {
+    background: #5e5e5e;
+}
+
+@media (max-width: 479px) {
+    .sr-reviews-slider .slick-dots {
+        display: block;
+    }
+
+    .sr-reviews-slider .slick-prev,
+    .sr-reviews-slider .slick-next {
+        display: none !important;
+    }
+}
+
+@media (max-width: 767px) {
+    .sr-reviews {
+        padding: 20px 0 40px;
+    }
+}

@@ -1,0 +1,2 @@
+date	size'/'remotesize	flags(request:Update,Range state:File response:Modified,Chunked,gZipped)	statuscode	status ('servermsg')	MIME	Etag|Date	URL	localfile	(from URL)
+17:17:42	75193/75193	---MCZ	403	error ('Forbidden')	text/html	etag:W/%2269b1618c-125b9%22	https://sevenroofing.com.au/	D:/Dowloaded%20website/Seven%20Roofing%20V2/sevenroofing.com.au/index.html	(from )

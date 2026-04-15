@@ -1,0 +1,254 @@
+/* Area/Suburb Page Styles */
+
+/* Hero Banner - image as background (area pages have no Slick slider) */
+.sec_hmbanner .js_hmbanner>li{position:relative}
+.sec_hmbanner .js_hmbanner>li:before{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background-image:linear-gradient(175deg,rgb(0 0 0 / 90%) 12%,transparent 90%);z-index:1;pointer-events:none}
+@media(max-width:1550px){
+.sec_hmbanner .js_hmbanner>li>img,
+.sec_hmbanner .js_hmbanner>li>picture>img{position:absolute;right:0;bottom:0;max-width:inherit;left:0;top:0;width:100%;object-fit:cover;z-index:-1;overflow:hidden;height:100%}
+.sec_hmbanner .js_hmbanner>li>picture{position:absolute;top:0;left:0;right:0;bottom:0;width:100%;height:100%;z-index:-1}
+}
+
+/* Enquire Section */
+.sec_enquire .container{max-width:100%!important}
+.enquire_wrap{display:flex;flex-wrap:wrap;margin:-201px 130px 0;background:#fff}
+.enquire_head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;margin:0 0 17px}
+.enquire_box{width:calc(100% - 384px);padding:35px 42px 30px}
+.enquire_title{font-size:22px;font-weight:600;color:#153764;text-transform:uppercase}
+.enquire_text{font-size:16px;color:#373737}
+.cat_box{width:384px;background:#F3F8FE;display:flex;flex-wrap:wrap;align-items:center;justify-content:center}
+.cat_list{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;height:100%}
+.cat_list li{padding:0 35px}
+.cat_list li:not(:last-child){border-right:1px solid rgb(21 55 100 / 10%)}
+.cat_item{display:flex;flex-wrap:wrap;flex-direction:column;align-items:center;text-align:center;height:100%;justify-content:flex-end}
+.cat_item>img{max-width:70px;margin:0 0 20px}
+.cat_title{font-size:16px;font-weight:600;color:#153764;text-transform:uppercase}
+
+/* Inline Form Layout (shared with home page) */
+.form_enquire{display:flex;flex-wrap:wrap;align-items:center;margin:0 -10px}
+.form_enquire .formgroup{margin-bottom:0;padding:0 10px;width:21.2%}
+.form_enquire .formcontrol,.form_enquire .submit_block,.form_enquire .submit_block [class*="btn_"]{height:46px;min-height:auto;margin:0}
+.form_enquire .formcontrol{padding:11px 16px;font-size:14px}
+.form_enquire .submit_block{padding:0 10px;width:15%}
+.form_enquire .submit_block [class*="btn_"]{width:100%}
+
+/* Suburb/Area banner - light background (override default dark gradient) */
+.sec_inbanner{background:#f3f8fe;padding:40px 0;min-height:auto;border-bottom:1px solid #D7E1EC}
+.sec_inbanner:before{content:none}
+.inbanner_title{color:#000}
+ul.woo_breadcums li a,
+ul.woo_breadcums li span.breadcrumb_last{color:#000}
+ul.woo_breadcums li a:after{filter:brightness(0)}
+.brands_wrap .sechead{margin-bottom:30px}
+.imgwithborder img{width:100%;height:100%}
+.mapimg img{height:auto}
+
+/* Areas Top - Text Left, Image Right */
+.sec_areas_top{padding:80px 0 0}
+section.sec_areas_top.no_centre.maincontent.ptag{text-align:left}
+.areas_top_wrap{display:flex;flex-wrap:wrap;align-items:center;padding:0 80px}
+.areas_top_left{width:55%;padding-right:50px}
+.areas_top_right{width:45%}
+
+/* Services Section */
+.sec_service{padding:77px 0 80px}
+.sec_service .serv_list{padding:0;margin:0 -30px}
+.sec_service .serv_list li{padding:0 30px;margin:0 0 60px}
+.sec_service .serv_img{aspect-ratio:3/2;overflow:hidden}
+.sec_service .serv_img img{width:100%;height:100%;object-fit:cover}
+
+/* Suburb Block - Content Left, Image Right (alternating) */
+.sec_suburb_block{padding:0 0 80px}
+.suburb_block{display:flex;flex-wrap:wrap;margin:0 -25px}
+.suburb_block_content{width:60%;padding:0 25px}
+.suburb_block_img{width:40%;padding:0 25px;position:sticky;top:0;align-self:flex-start}
+.suburb_block:nth-of-type(even) .suburb_block_img{order:1}
+.suburb_block:nth-of-type(even) .suburb_block_content{order:2}
+.suburb_block:not(:last-of-type){margin-bottom:80px}
+
+/* Map + Areas We Serve - Side by Side */
+.sec_areas_main{padding:0 0 80px}
+.areas_main_wrap{display:flex;flex-wrap:wrap;align-items:flex-start}
+.areas_main_left{width:45%}
+.areas_main_right{width:55%;padding-left:90px}
+.areas_map{min-height:500px}
+.areas_map .imgwithborder{display:block;height:100%}
+.areas_map iframe{width:100%;min-height:460px;border:0}
+
+/* Why You Need Section - Image Left, Text Right */
+.sec_whyneed{padding:120px 0 77px}
+.whyneed_wrap{display:flex;flex-wrap:wrap;align-items:center;background:#fff;padding:20px;box-shadow:0 0 6px rgb(154 154 154 / 16%)}
+.whyneed_left{width:48.2%}
+.whyneed_right{width:51.8%;padding:15px 60px}
+.whyneed_img{position:relative}
+.whyneed_imgtext{position:absolute;top:27px;left:0;right:0;margin:0 auto;width:92%}
+.whyneed_right .dlist li{font-weight:600}
+
+/* CTA Section */
+.sec_cta{min-height:274px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:40px 0}
+.sec_cta:before{content:'';width:100%;height:100%;background:rgb(21 55 100 / 85%);z-index:0;position:absolute}
+.sec_cta .container{width:100%}
+.cta_wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between}
+.cta_subtitle{font-size:24px;font-weight:600;color:#fff;text-transform:uppercase;margin:0 0 10px;letter-spacing:.8px}
+.cta_title{font-size:32px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:1px}
+.cta_item{width:calc(100% - 420px);padding-right:30px}
+.cta_btnsmain{width:420px}
+.cta_btnswrap{background:#F3F8FE;border-radius:5px;padding:28px 30px;position:relative}
+.cta_btnswrap:before{content:'';width:60px;height:150px;border-bottom:solid 75px transparent;border-top:solid 75px transparent;position:absolute;border-right:solid 60px #F3F8FE;left:-60px}
+.subscta .cta_item{width:100%;padding:0;text-align:center}
+.subscta .cta_btnsmain{width:100%;margin:20px 0 0}
+.subscta .cta_btnswrap{display:inline-block}
+.subscta .cta_btnswrap:before{content:none}
+
+/* Before & After Gallery - Side by Side */
+.sec_gallery{padding:80px 0}
+.sec_gallery.beforeafter .js_bagallery{display:flex;flex-wrap:wrap;background:#fff;padding:20px 10px;box-shadow:0 0 6px rgb(154 154 154 / 16%)}
+.sec_gallery.beforeafter .js_bagallery>li{width:50%;padding:0 10px}
+.bagal_item{position:relative}
+.bagal_item:before{content:'';width:100%;height:100%;background:rgba(0 0 0 / 10%);position:absolute;left:0;right:0;top:0}
+.bagal_item>img{margin:0 auto;width:100%;display:block}
+.bagal_olay{position:absolute;width:100%;height:100%;display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;top:0}
+.bagal_label{display:flex;flex-wrap:wrap;align-items:center;background:#fff;position:relative;height:50px;min-width:93px;justify-content:flex-end}
+.bagal_label span{text-transform:capitalize;font-size:18px;width:calc(100% - 17px)}
+.bagal_label:before{content:'';width:22px;height:50px;border-bottom:solid 25px transparent;border-top:solid 25px transparent;position:absolute}
+.sec_gallery.beforeafter .js_bagallery>li:nth-child(odd) .bagal_label span{padding-left:15px}
+.sec_gallery.beforeafter .js_bagallery>li:nth-child(odd) .bagal_label:before{border-right:solid 20px #fff;left:-22px}
+.sec_gallery.beforeafter .js_bagallery>li:nth-child(even) .bagal_olay{justify-content:flex-start}
+.sec_gallery.beforeafter .js_bagallery>li:nth-child(even) .bagal_label{justify-content:flex-start}
+.sec_gallery.beforeafter .js_bagallery>li:nth-child(even) .bagal_label span{order:1;padding-right:15px;color:#153764}
+.sec_gallery.beforeafter .js_bagallery>li:nth-child(even) .bagal_label:before{border-left:solid 20px #fff;right:-22px}
+
+/* Content text */
+.maincontent h2{font-size:28px}
+p a{color:#153764}
+
+/* About (Areas We Serve hub) */
+.sec_hmabout{padding:0 0 80px;text-align:center}
+
+/* Send Message button centering */
+.submit_block{text-align:center}
+.submit_block .btn_solid_dark{display:flex;justify-content:center;align-items:center;text-align:center}
+
+/* ========== RESPONSIVE ========== */
+
+@media(max-width:1550px){
+.enquire_wrap{margin:-180px 40px 0}
+.enquire_box{width:calc(100% - 338px);padding:26px}
+.cat_box{width:338px}
+.cat_list li{padding:0 20px}
+.cat_list li:not(:last-child){border-right:none}
+.cat_item>img{max-width:80px;margin:0 0 10px}
+.areas_top_wrap,.home-top-title-wrap{padding:0}
+}
+
+@media(max-width:1439px){
+.cat_list li{padding:0 20px}
+.cat_box{width:280px}
+.enquire_box{width:calc(100% - 280px)}
+.areas_main_right{padding-left:65px}
+.suburb_block{margin:0 -20px}
+.suburb_block_content{padding:0 20px}
+.suburb_block_img{padding:0 20px}
+.cta_wrap{flex-direction:column;align-items:center;text-align:center}
+.cta_item{width:100%;padding-right:0}
+.whyneed_right{padding:15px 0 15px 40px}
+}
+
+@media(max-width:1199px){
+.sec_enquire{padding:60px 0 0;background:#F3F8FE}
+.enquire_wrap{margin:0;flex-direction:column;max-width:800px;margin:-270px auto 0;box-shadow:0 0 6px rgb(154 154 154 / 16%)}
+.enquire_box{width:100%}
+.form_enquire .formgroup{padding:0 10px;width:50%;margin:0 0 20px}
+.form_enquire .submit_block{width:100%}
+.cat_box{width:100%;padding:0 26px 26px;background:#fff}
+.cat_list{width:100%}
+.cat_list li{width:50%}
+.sec_whyneed{padding:60px 0}
+.sec_gallery{padding:60px 0}
+.sec_areas_top{padding:60px 0 0}
+.sec_areas_main{padding:0 0 60px}
+.suburb_block:not(:last-of-type){margin-bottom:60px}
+.sec_suburb_block{padding:0 0 60px}
+.sec_hmabout{padding:0 0 60px}
+.sec_service{padding:60px 0}
+.sec_service .serv_list{padding:0;margin:0 -20px}
+.sec_service .serv_list li{padding:0 20px;margin:0 0 44px}
+}
+
+@media(max-width:991px){
+.whyneed_left{width:100%}
+.whyneed_right{padding:0;width:100%;margin:30px 0 0}
+.areas_top_left{width:100%;padding:0}
+.areas_top_right{width:100%;margin:50px 0 0}
+.sec_areas_top{text-align:center}
+.areas_main_left{width:100%}
+.areas_main_right{width:100%;padding:0;margin:40px 0 0}
+.areas_list li{width:33.33%}
+.suburb_block{margin:0}
+.suburb_block:not(:last-of-type){margin-bottom:40px}
+.suburb_block_content{width:100%;padding:0;order:2;margin:40px 0 0}
+.suburb_block_img{width:100%;padding:0;order:1;position:relative;top:auto;align-self:auto}
+.sec_areas_main{padding:0 0 40px}
+.sec_service .serv_list{margin:0 -15px}
+.sec_service .serv_list li{padding:0 15px;margin:0 0 30px}
+.cta_title{font-size:26px}
+.cta_subtitle{font-size:20px}
+}
+
+@media(max-width:767px){
+.form_enquire .formgroup{width:100%}
+.areas_map{min-height:360px}
+.areas_map iframe{min-height:320px}
+.whyneed_wrap{padding:15px}
+.sec_gallery.beforeafter .js_bagallery{padding:5px 15px 10px;flex-direction:column}
+.sec_gallery.beforeafter .js_bagallery>li{width:100%;padding:10px 0}
+.bagal_olay{align-items:flex-end;justify-content:center}
+.bagal_label:before{content:none}
+.bagal_label{text-align:center;align-items:flex-end;height:48px;z-index:1;background:transparent}
+.bagal_label span{width:100%;padding:0;font-size:16px}
+.sec_gallery.beforeafter .js_bagallery>li:nth-child(odd) .bagal_label span,
+.sec_gallery.beforeafter .js_bagallery>li:nth-child(even) .bagal_label span{padding:0}
+.sec_gallery.beforeafter .js_bagallery>li:nth-child(even) .bagal_olay{justify-content:center;align-items:flex-end}
+.maincontent h1{font-size:26px}
+.maincontent h2{font-size:20px;margin-bottom:18px!important}
+.sec_whyneed{padding:40px 0}
+.sec_gallery{padding:40px 0}
+.sec_areas_top{padding:40px 0 0}
+.areas_top_right{margin:30px 0 0}
+.areas_list li{width:50%}
+.areas_list li{font-size:14px;margin:0 0 14px}
+.sec_suburb_block{padding:0 0 40px}
+.areas_map img{height:auto}
+.sec_service{padding:40px 0}
+.sec_service .serv_list li{padding:0 10px;margin:0 0 20px}
+.sec_hmabout{padding:0 0 40px}
+.sec_enquire{padding:40px 0 0}
+.enquire_wrap{margin:-250px auto 0}
+.enquire_head{flex-direction:column}
+.enquire_text{margin:5px 0 0}
+.cta_text{padding-left:0;width:100%;text-align:center}
+.cta_title{font-size:24px}
+.cta_subtitle{font-size:18px}
+.cta_btnswrap{padding:20px}
+.cta_btnswrap:before{content:none}
+}
+
+@media(max-width:575px){
+.whyneed_wrap{padding:10px}
+.sec_gallery.beforeafter .js_bagallery{padding:5px 10px}
+.sec_gallery.beforeafter .js_bagallery>li{padding:5px 0}
+.sec_service .serv_list li{padding:0 5px;margin:0 0 18px}
+.enquire_wrap{margin:-170px auto 0}
+.enquire_box{padding:26px 20px}
+.cat_list li{padding:0 10px}
+.cat_item>img{max-width:60px}
+.cta_title{font-size:22px}
+}
+
+@media(max-width:420px){
+.areas_list li{padding:0 0 0 14px}
+}
+
+@media(max-width:350px){
+.enquire_wrap{margin:-110px auto 0}
+}
