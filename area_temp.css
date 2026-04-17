@@ -2,15 +2,12 @@
 
 /* Hero Banner - image as background (area pages have no Slick slider) */
 .sec_hmbanner .js_hmbanner>li{position:relative}
-.sec_hmbanner .js_hmbanner>li:before{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background-image:linear-gradient(175deg,rgb(0 0 0 / 90%) 12%,transparent 90%);z-index:1;pointer-events:none}
+.sec_hmbanner .js_hmbanner>li:before{content:'';width:100%;height:100%;background-image:linear-gradient(175deg,rgb(0 0 0 / 90%) 12%,transparent 90%);z-index:0;position:absolute;top:0;left:0}
 @media(max-width:1550px){
-.sec_hmbanner .js_hmbanner>li>img,
-.sec_hmbanner .js_hmbanner>li>picture>img{position:absolute;right:0;bottom:0;max-width:inherit;left:0;top:0;width:100%;object-fit:cover;z-index:-1;overflow:hidden;height:100%}
-.sec_hmbanner .js_hmbanner>li>picture{position:absolute;top:0;left:0;right:0;bottom:0;width:100%;height:100%;z-index:-1}
+.sec_hmbanner .js_hmbanner>li>img{position:absolute;right:0;bottom:0;max-width:inherit;left:0;top:0;width:100%;object-fit:cover;z-index:-1;overflow:hidden;height:100%}
 }
 
 /* Enquire Section */
-.sec_enquire{position:relative;z-index:3}
 .sec_enquire .container{max-width:100%!important}
 .enquire_wrap{display:flex;flex-wrap:wrap;margin:-201px 130px 0;background:#fff}
 .enquire_head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;margin:0 0 17px}
@@ -197,12 +194,6 @@ p a{color:#153764}
 }
 
 @media(max-width:767px){
-.ol_hmbanner{min-height:500px;padding-top:30px}
-.hmban_title{font-size:24px;max-width:100%}
-ul.bankey_list>li{width:50%;margin:0 0 20px;padding:0}
-.bankey_item{flex-direction:row}
-.bankey_item .key_icon{width:40px;margin:0}
-.bankey_item .key_info{width:calc(100% - 40px);padding-left:15px;text-align:left}
 .form_enquire .formgroup{width:100%}
 .areas_map{min-height:360px}
 .areas_map iframe{min-height:320px}
@@ -241,9 +232,6 @@ ul.bankey_list>li{width:50%;margin:0 0 20px;padding:0}
 }
 
 @media(max-width:575px){
-ul.bankey_list{max-width:450px}
-.bankey_item .key_icon{width:30px}
-.bankey_item .key_info{width:calc(100% - 30px);padding-left:10px}
 .whyneed_wrap{padding:10px}
 .sec_gallery.beforeafter .js_bagallery{padding:5px 10px}
 .sec_gallery.beforeafter .js_bagallery>li{padding:5px 0}
@@ -256,14 +244,9 @@ ul.bankey_list{max-width:450px}
 }
 
 @media(max-width:420px){
-.ol_hmbanner{min-height:400px;padding-top:35px}
-.hmban_title{font-size:20px}
-.bankey_item .key_info{font-size:14px}
 .areas_list li{padding:0 0 0 14px}
 }
 
 @media(max-width:350px){
-ul.bankey_list{max-width:185px;margin:20px 0 0}
-ul.bankey_list>li{width:100%;margin:0 0 10px}
 .enquire_wrap{margin:-110px auto 0}
 }

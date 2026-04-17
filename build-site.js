@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const sharp = require('sharp');
+const { minify } = require('terser');
 
 const SRC = path.join(__dirname, 'HTTrack website download', 'Seven', 'sevenroofing.com.au');
 const BUILD = path.join(__dirname, 'build');
@@ -170,6 +171,12 @@ function processPage(page) {
   // Fix CTA alignment on area pages: remove subscta class for side-by-side layout
   body = body.replace(/ subscta/g, '');
 
+  // SEO: Convert togglebtn from <a> to <button> (Lighthouse: links must be crawlable)
+  body = body.replace(/<a\s+class="togglebtn">([\s\S]*?)<\/a>/g, '<button type="button" class="togglebtn" aria-label="Open menu">$1</button>');
+
+  // Accessibility: Remove invalid JS-style comments inside HTML (breaks list semantics)
+  body = body.replace(/\s*\/\/\s*<li[^>]*>.*?<\/li>\s*\/\/\s*/g, '');
+
   // Remove GTM noscript from body (we add it ourselves)
   body = body.replace(/<!-- Google Tag Manager \(noscript\) -->[\s\S]*?<!-- End Google Tag Manager \(noscript\) -->/g, '');
   // Remove header/footer comment markers
@@ -224,7 +231,7 @@ function processPage(page) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-${page.dest === 'index.html' ? `    <link rel="preload" as="image" fetchpriority="high" imagesrcset="${ap}images/bg_banner_desk01.avif 1920w, ${ap}images/bg_banner_desk01-1440w.avif 1440w, ${ap}images/bg_banner_desk01-1024w.avif 1024w, ${ap}images/bg_banner_desk01-768w.avif 768w" imagesizes="100vw" type="image/avif">\n` : `    <link rel="preload" as="image" fetchpriority="high" imagesrcset="${ap}images/bg_inner_banner-768w.avif 768w, ${ap}images/bg_inner_banner-1024w.avif 1024w, ${ap}images/bg_inner_banner-1440w.avif 1440w, ${ap}images/bg_inner_banner.jpg 1920w" imagesizes="100vw">\n`}    <link rel="icon" href="${ap}images/favicon.png" type="image/x-icon">
+${page.dest === 'index.html' ? `    <link rel="preload" as="image" fetchpriority="high" imagesrcset="${ap}images/bg_banner_desk01.avif 1920w, ${ap}images/bg_banner_desk01-1440w.avif 1440w, ${ap}images/bg_banner_desk01-1024w.avif 1024w, ${ap}images/bg_banner_desk01-768w.avif 768w, ${ap}images/bg_banner_desk01-480w.avif 480w" imagesizes="100vw" type="image/avif">\n` : `    <link rel="preload" as="image" fetchpriority="high" imagesrcset="${ap}images/bg_inner_banner-480w.avif 480w, ${ap}images/bg_inner_banner-768w.avif 768w, ${ap}images/bg_inner_banner-1024w.avif 1024w, ${ap}images/bg_inner_banner-1440w.avif 1440w, ${ap}images/bg_inner_banner.jpg 1920w" imagesizes="100vw">\n`}    <link rel="icon" href="${ap}images/favicon.png" type="image/x-icon">
 
     <title>${title}</title>
     <meta name="description" content="${metaDesc}"/>
@@ -234,7 +241,7 @@ ${ogMeta.length ? '    ' + ogMeta.join('\n    ') + '\n' : ''}${twMeta.length ? '
 ${schema ? '    ' + schema + '\n' : ''}
     <!-- Critical CSS -->
     <style id="critical-css">${critCss}
-.sec_hmbanner{position:relative;overflow:hidden;z-index:0}.sec_hmbanner .ban_desk{display:block;width:100%;height:auto;aspect-ratio:1920/868;content-visibility:visible}.sec_hmbanner picture{display:block;line-height:0}.sec_enquire{contain:layout style;position:relative;z-index:3}.enquire_wrap{display:flex;flex-wrap:wrap;margin:-201px 88px 0;background:#fff;min-height:200px}.enquire_box{width:calc(100% - 384px);padding:35px 42px 30px}.enquire_head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;margin:0 0 17px}.enquire_title{font-size:22px;font-weight:600;color:#153764;text-transform:uppercase}.enquire_text{font-size:14px}.form_enquire{display:flex;flex-wrap:wrap;align-items:center;margin:0 -10px}.form_enquire .formgroup{margin-bottom:0;padding:0 10px;width:21.2%}.form_enquire .formcontrol,.form_enquire .submit_block,.form_enquire .submit_block [class*="btn_"]{height:46px;min-height:auto;margin:0}.form_enquire .formcontrol{width:100%;padding:11px 16px;font-size:14px;border:1px solid #D7E1EC;background:transparent;color:#373737;font-family:'Poppins'}.form_enquire .submit_block{padding:0 10px;width:15%}.cat_box{width:384px;background:#F3F8FE;display:flex;flex-wrap:wrap;align-items:center;justify-content:center}.cat_list{display:flex;flex-wrap:wrap}.cat_list li{padding:0 35px}.cat_list li:not(:last-child){border-right:1px solid rgb(21 55 100/10%)}.cat_item{text-align:center;height:100%;display:flex;flex-direction:column;flex-wrap:wrap;align-items:center;justify-content:flex-end}.cat_item>img{max-width:70px;margin:0 0 20px}@media(max-width:1550px){.sec_enquire .container{max-width:100%!important}.enquire_wrap{margin:-180px 0 0}.enquire_box{width:calc(100% - 338px);padding:26px}.cat_box{width:338px}.cat_list li{padding:0 20px}}@media(max-width:1439px){.cat_box{width:280px}.enquire_box{width:calc(100% - 280px)}}@media(max-width:1199px){.sec_enquire{padding:60px 0 0;background:#F3F8FE}.enquire_wrap{margin:-270px auto 0;max-width:800px;flex-direction:column;box-shadow:0 0 6px rgb(154 154 154/16%)}.enquire_box{width:100%}.form_enquire .formgroup{width:50%;margin:0 0 20px}.form_enquire .submit_block{width:100%}.cat_box{width:100%;padding:0 26px 26px;background:#fff}.cat_list{width:100%}.cat_list li{width:50%}}@media(max-width:575px){.sec_enquire{padding:40px 0 0}.enquire_wrap{margin:-250px auto 0}.form_enquire .formgroup{width:100%}.enquire_head{flex-direction:column}.enquire_text{margin:5px 0 0}}@media(max-width:420px){.enquire_wrap{margin:-170px auto 0}.enquire_box{padding:26px 20px}.cat_list li{padding:0 10px}.cat_item>img{max-width:60px}.cat_box{padding:0 20px 26px}}@media(max-width:350px){.enquire_wrap{margin:-110px auto 0}}.headbrand img,.headbrand picture{display:block}.headbrand a{display:block;width:172px;height:71px}.headbrand img{width:172px;height:71px}@media(max-width:1550px){.headbrand a{width:150px;height:62px}.headbrand img{width:150px;height:62px}}@media(max-width:1300px){.headbrand a{width:125px;height:52px}.headbrand img{width:125px;height:52px}}@media(max-width:1199px){.headbrand a{width:170px;height:70px}.headbrand img{width:170px;height:70px}}@media(max-width:550px){.headbrand a{width:120px;height:50px}.headbrand img{width:120px;height:50px}}img{content-visibility:auto}.animated{animation-duration:1s;animation-fill-mode:both}@keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}.fadeInUp{animation-name:fadeInUp}.js_hmbanner>li{position:relative}.js_hmbanner>li::before{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background-image:linear-gradient(175deg,rgb(0 0 0/90%) 12%,transparent 90%);z-index:1;pointer-events:none}.ol_hmbanner{z-index:2}@media(max-width:1550px){.js_hmbanner>li>picture{position:absolute;top:0;left:0;right:0;bottom:0;width:100%;height:100%;z-index:-1}.js_hmbanner>li>picture>img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:-1}}.sec_inbanner::before{top:0;left:0;z-index:1;pointer-events:none}.sec_inbanner .container{z-index:2;position:relative}</style>
+.sec_hmbanner{position:relative;overflow:hidden;z-index:0}.sec_hmbanner .ban_desk{display:block;width:100%;height:auto;aspect-ratio:1920/868;content-visibility:visible}.sec_hmbanner picture{display:block;line-height:0}.sec_enquire{position:relative;z-index:3}.enquire_wrap{display:flex;flex-wrap:wrap;margin:-201px 88px 0;background:#fff;min-height:200px}.enquire_box{width:calc(100% - 384px);padding:35px 42px 30px}.enquire_head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;margin:0 0 17px}.enquire_title{font-size:22px;font-weight:600;color:#153764;text-transform:uppercase}.enquire_text{font-size:14px}.form_enquire{display:flex;flex-wrap:wrap;align-items:center;margin:0 -10px}.form_enquire .formgroup{margin-bottom:0;padding:0 10px;width:21.2%}.form_enquire .formcontrol,.form_enquire .submit_block,.form_enquire .submit_block [class*="btn_"]{height:46px;min-height:auto;margin:0}.form_enquire .formcontrol{width:100%;padding:11px 16px;font-size:14px;border:1px solid #D7E1EC;background:transparent;color:#373737;font-family:'Poppins'}.form_enquire .submit_block{padding:0 10px;width:15%}.cat_box{width:384px;background:#F3F8FE;display:flex;flex-wrap:wrap;align-items:center;justify-content:center}.cat_list{display:flex;flex-wrap:wrap}.cat_list li{padding:0 35px}.cat_list li:not(:last-child){border-right:1px solid rgb(21 55 100/10%)}.cat_item{text-align:center;height:100%;display:flex;flex-direction:column;flex-wrap:wrap;align-items:center;justify-content:flex-end}.cat_item>img{max-width:70px;margin:0 0 20px}@media(max-width:1550px){.sec_enquire .container{max-width:100%!important}.enquire_wrap{margin:-180px 0 0}.enquire_box{width:calc(100% - 338px);padding:26px}.cat_box{width:338px}.cat_list li{padding:0 20px}}@media(max-width:1439px){.cat_box{width:280px}.enquire_box{width:calc(100% - 280px)}}@media(max-width:1199px){.sec_enquire{padding:60px 0 0;background:#F3F8FE}.enquire_wrap{margin:-270px auto 0;max-width:800px;flex-direction:column;box-shadow:0 0 6px rgb(154 154 154/16%)}.enquire_box{width:100%}.form_enquire .formgroup{width:50%;margin:0 0 20px}.form_enquire .submit_block{width:100%}.cat_box{width:100%;padding:0 26px 26px;background:#fff}.cat_list{width:100%}.cat_list li{width:50%}}@media(max-width:575px){.sec_enquire{padding:40px 0 0}.enquire_wrap{margin:-250px auto 0}.form_enquire .formgroup{width:100%}.enquire_head{flex-direction:column}.enquire_text{margin:5px 0 0}}@media(max-width:420px){.enquire_wrap{margin:-170px auto 0}.enquire_box{padding:26px 20px}.cat_list li{padding:0 10px}.cat_item>img{max-width:60px}.cat_box{padding:0 20px 26px}}@media(max-width:350px){.enquire_wrap{margin:-110px auto 0}}.headbrand img,.headbrand picture{display:block}.headbrand a{display:block;width:172px;height:71px}.headbrand img{width:172px;height:71px}@media(max-width:1550px){.headbrand a{width:150px;height:62px}.headbrand img{width:150px;height:62px}}@media(max-width:1300px){.headbrand a{width:125px;height:52px}.headbrand img{width:125px;height:52px}}@media(max-width:1199px){.headbrand a{width:170px;height:70px}.headbrand img{width:170px;height:70px}}@media(max-width:550px){.headbrand a{width:120px;height:50px}.headbrand img{width:120px;height:50px}}img{content-visibility:auto}.animated{animation-duration:1s;animation-fill-mode:both}@keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}.fadeInUp{animation-name:fadeInUp}.js_hmbanner>li{position:relative}.js_hmbanner>li::before{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background-image:linear-gradient(175deg,rgb(0 0 0/90%) 12%,transparent 90%);z-index:1;pointer-events:none}.ol_hmbanner{z-index:2}@media(max-width:1550px){.js_hmbanner>li>picture{position:absolute;top:0;left:0;right:0;bottom:0;width:100%;height:100%;z-index:-1}.js_hmbanner>li>picture>img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:-1}.sec_hmbanner .ban_desk{height:100%;aspect-ratio:auto}}.sec_inbanner::before{top:0;left:0;z-index:1;pointer-events:none}.sec_inbanner .container{z-index:2;position:relative}@media(max-width:767px){.ol_hmbanner{min-height:500px;padding-top:30px}ul.bankey_list>li{width:50%;margin:0 0 20px;padding:0}.bankey_item{flex-direction:row}.bankey_item .key_icon{width:40px;margin:0}.bankey_item .key_info{width:calc(100% - 40px);padding-left:15px;text-align:left}.hmban_title{font-size:24px;max-width:100%}}@media(max-width:575px){ul.bankey_list{max-width:450px}.bankey_item .key_icon{width:30px}.bankey_item .key_info{width:calc(100% - 30px);padding-left:10px}}@media(max-width:420px){.ol_hmbanner{min-height:400px;padding-top:35px}.hmban_title{font-size:20px}.bankey_item .key_info{font-size:14px}}@media(max-width:350px){ul.bankey_list{max-width:185px;margin:20px 0 0}ul.bankey_list>li{width:100%;margin:0 0 10px}}</style>
 ${customCss ? '    <style id="custom-css">\n' + customCss + '\n    </style>\n' : ''}
     <!-- Preconnect to critical third-party origins -->
     <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
@@ -250,9 +257,9 @@ ${customCss ? '    <style id="custom-css">\n' + customCss + '\n    </style>\n' :
     <noscript><link rel="stylesheet" href="${ap}css/main.css"></noscript>
     <link rel="stylesheet" href="${ap}css/slick.css" media="print" onload="this.media='all'">${pageCssLinks}
 
-    <!-- Google Tag Manager (delayed until browser idle to reduce TBT/LCP impact) -->
+    <!-- Google Tag Manager (deferred until user interaction or 3.5s timeout) -->
     <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-TX1X4Y0L7Y');
-    function _loadGTM(){var f=document.getElementsByTagName('script')[0],j=document.createElement('script');j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id=GTM-N2VL4MSD';f.parentNode.insertBefore(j,f)}window.addEventListener('load',function(){'requestIdleCallback'in window?requestIdleCallback(_loadGTM,{timeout:3500}):setTimeout(_loadGTM,3500)});</script>
+    (function(){var d=false;function l(){if(d)return;d=true;var f=document.getElementsByTagName('script')[0],j=document.createElement('script');j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id=GTM-N2VL4MSD';f.parentNode.insertBefore(j,f)}['scroll','click','touchstart','mousemove','keydown'].forEach(function(e){window.addEventListener(e,l,{once:true,passive:true})});setTimeout(l,3500)})();</script>
 </head>
 <body class="${bodyClass}">
 <script>if(window.location.pathname.endsWith('/index.html'))history.replaceState(null,'',window.location.pathname.replace(/\\/index\\.html$/,'/'));</script>
@@ -334,8 +341,8 @@ function fixImagePaths(html, ap) {
 
 function wrapImagesWithPicture(html) {
   const heroResponsive = {
-    'bg_banner_desk01.jpg': { base: 'bg_banner_desk01', ext: '.jpg', sizes: [768, 1024, 1440, 1920] },
-    'bg_inner_banner.jpg': { base: 'bg_inner_banner', ext: '.jpg', sizes: [768, 1024, 1440, 1920] },
+    'bg_banner_desk01.jpg': { base: 'bg_banner_desk01', ext: '.jpg', sizes: [480, 768, 1024, 1440, 1920] },
+    'bg_inner_banner.jpg': { base: 'bg_inner_banner', ext: '.jpg', sizes: [480, 768, 1024, 1440, 1920] },
   };
 
   const contentResponsive = {
@@ -430,6 +437,7 @@ function addMissingImageDimensions(html) {
     'brand_colorbond-1-213x80.png': { w: 213, h: 80 },
     'brand_nutech-213x80.png': { w: 213, h: 80 },
     'brand_starpoint-213x80.png': { w: 213, h: 80 },
+    'roofing-gutters-gif.gif': { w: 804, h: 836 },
   };
 
   html = html.replace(/<img\b([^>]*?)(\s*\/?)>/g, function(match, attrs, closing) {
@@ -708,7 +716,7 @@ function generate404() {
       .error-page .btn_solid_dark { text-decoration: none; }
     </style>
     <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-TX1X4Y0L7Y');
-    function _loadGTM(){var f=document.getElementsByTagName('script')[0],j=document.createElement('script');j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id=GTM-N2VL4MSD';f.parentNode.insertBefore(j,f)}window.addEventListener('load',function(){'requestIdleCallback'in window?requestIdleCallback(_loadGTM,{timeout:3500}):setTimeout(_loadGTM,3500)});</script>
+    (function(){var d=false;function l(){if(d)return;d=true;var f=document.getElementsByTagName('script')[0],j=document.createElement('script');j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id=GTM-N2VL4MSD';f.parentNode.insertBefore(j,f)}['scroll','click','touchstart','mousemove','keydown'].forEach(function(e){window.addEventListener(e,l,{once:true,passive:true})});setTimeout(l,3500)})();</script>
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N2VL4MSD"
@@ -866,7 +874,7 @@ async function optimizeImages() {
       const avifDest = path.join(imagesDir, file.replace(/\.(jpe?g|png)$/i, '.avif'));
       if (!fs.existsSync(avifDest)) {
         try {
-          await sharp(src).avif({ quality: 30, effort: 9 }).toFile(avifDest);
+          await sharp(src).avif({ quality: 25, effort: 9 }).toFile(avifDest);
         } catch (e) { /* skip avif if unsupported */ }
       }
     }
@@ -887,7 +895,7 @@ async function optimizeImages() {
   console.log(`  OK: ${converted} images converted to WebP (${skipped} skipped — WebP was larger)`);
   if (webpExclusions.size) console.log(`  Excluded from WebP: ${[...webpExclusions].join(', ')}`);
 
-  const responsiveSizes = [768, 1024, 1440];
+  const responsiveSizes = [480, 768, 1024, 1440];
   const responsiveHeroes = ['bg_banner_desk01.jpg', 'bg_inner_banner.jpg'];
   let respCount = 0;
   for (const file of responsiveHeroes) {
@@ -902,7 +910,7 @@ async function optimizeImages() {
         try { await sharp(src).resize(w).jpeg({ quality: 80, mozjpeg: true }).toFile(jpgDest); respCount++; } catch (e) {}
       }
       if (!fs.existsSync(avifDest)) {
-        try { await sharp(src).resize(w).avif({ quality: 30, effort: 9 }).toFile(avifDest); respCount++; } catch (e) {}
+        try { await sharp(src).resize(w).avif({ quality: 25, effort: 9 }).toFile(avifDest); respCount++; } catch (e) {}
       }
     }
   }
@@ -947,6 +955,33 @@ function copyContactPhp() {
   }
 }
 
+// --- MINIFY JS FILES ---
+async function minifyJsFiles() {
+  const jsDir = path.join(BUILD, 'assets', 'js');
+  const files = fs.readdirSync(jsDir).filter(f => f.endsWith('.js') && !f.endsWith('.min.js'));
+  let count = 0, saved = 0;
+  for (const file of files) {
+    const filePath = path.join(jsDir, file);
+    const code = fs.readFileSync(filePath, 'utf8');
+    try {
+      const result = await minify(code, {
+        compress: { drop_console: false, passes: 2 },
+        mangle: true,
+        output: { comments: false }
+      });
+      if (result.code && result.code.length < code.length) {
+        const diff = code.length - result.code.length;
+        fs.writeFileSync(filePath, result.code, 'utf8');
+        saved += diff;
+        count++;
+      }
+    } catch (e) {
+      console.log(`  WARN: Could not minify ${file}: ${e.message}`);
+    }
+  }
+  console.log(`  OK: ${count} JS files minified (${(saved / 1024).toFixed(1)} KiB saved)`);
+}
+
 // --- MAIN ---
 (async function main() {
   console.log('=== Seven Roofing Static Site Build ===\n');
@@ -965,6 +1000,9 @@ function copyContactPhp() {
       skipped++;
     }
   });
+
+  console.log('\nMinifying JavaScript...');
+  await minifyJsFiles();
 
   console.log('\nGenerating support files...');
   generateSitemaps();
