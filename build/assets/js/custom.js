@@ -36,7 +36,7 @@ jQuery(document).ready(function($) {
 		jQuery('.slick-slide[aria-hidden="false"]').find('[tabindex="-1"]').not('input[tabindex="-1"]').attr('tabindex', '0');
 	}
 	fixSlickAria();
-	jQuery('.js_hmbanner, .js_bagallery, .js_brands').on('afterChange init', fixSlickAria);
+	jQuery('.js_bagallery, .js_brands').on('afterChange init', fixSlickAria);
 
     $("input[type='tel']").keydown(function(e) {
         // Allow: backspace, delete, tab, escape, enter and .

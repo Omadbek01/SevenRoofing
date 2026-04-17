@@ -558,3 +558,18 @@ During a migration with ongoing speed optimization, you want to minimize signals
 The sitemap.xml exists on the server as a fallback for other crawlers - that's fine. Just don't manually submit it in GSC.
 
 When speed is stable: You can then update the lastmod dates and let Google naturally re-crawl through the existing sitemap_index.xml.
+
+
+Cache Clearing: Yes, Clear BOTH Caches
+You should clear both Dynamic Cache AND CDN Cache. Here's why:
+
+index.html changed -- Dynamic Cache serves the old HTML until purged
+home.js and custom.js changed -- These have Cache-Control: immutable headers in your .htaccess, which tells CDN edge servers to never re-validate. Without clearing CDN cache, edge servers will serve the old JS files indefinitely
+Correct workflow:
+
+Upload the 3 modified files to public_html
+Clear SiteGround Dynamic Cache (Site Tools > Speed > Caching > Dynamic Cache > Flush)
+Clear CDN Cache (Site Tools > Speed > CDN > Purge CDN Cache)
+Wait ~30 seconds for propagation
+Visit the site in an incognito window to verify the form works
+Run PageSpeed Insights (run 2-3 times -- first run warms the cache)

@@ -160,6 +160,8 @@ function processPage(page) {
   body = fixImagePaths(body, ap);
   body = removeSrcsetSizes(body);
   body = addMissingImageDimensions(body);
+  body = body.replace(/(<img[^>]*fetchpriority="high"[^>]*)\s+decoding="async"/g, '$1');
+  body = body.replace(/(<img[^>]*)\s+decoding="async"([^>]*fetchpriority="high")/g, '$1$2');
   body = wrapImagesWithPicture(body);
   body = wrapGifWithWebp(body);
   body = fixInternalLinks(body, rootPrefix);
@@ -201,7 +203,7 @@ function processPage(page) {
     pageJsScripts += `\n<script src="${ap}js/${j}" defer><\/script>`;
   });
   if (page.hasReviews) {
-    pageJsScripts += `\n<script src="${ap}js/client-reviews.js" defer><\/script>`;
+    pageJsScripts += `\n<script>function _loadCR(){var s=document.createElement('script');s.src='${ap}js/client-reviews.js';document.body.appendChild(s)}window.addEventListener('load',function(){'requestIdleCallback'in window?requestIdleCallback(_loadCR):setTimeout(_loadCR,200)})<\/script>`;
   }
 
   // --- FIX WP-CONTENT URLS IN META / SCHEMA ---
@@ -222,7 +224,7 @@ function processPage(page) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="${ap}images/favicon.png" type="image/x-icon">
+${page.dest === 'index.html' ? `    <link rel="preload" as="image" fetchpriority="high" imagesrcset="${ap}images/bg_banner_desk01.avif 1920w, ${ap}images/bg_banner_desk01-1440w.avif 1440w, ${ap}images/bg_banner_desk01-1024w.avif 1024w, ${ap}images/bg_banner_desk01-768w.avif 768w" imagesizes="100vw" type="image/avif">\n` : `    <link rel="preload" as="image" fetchpriority="high" imagesrcset="${ap}images/bg_inner_banner-768w.avif 768w, ${ap}images/bg_inner_banner-1024w.avif 1024w, ${ap}images/bg_inner_banner-1440w.avif 1440w, ${ap}images/bg_inner_banner.jpg 1920w" imagesizes="100vw">\n`}    <link rel="icon" href="${ap}images/favicon.png" type="image/x-icon">
 
     <title>${title}</title>
     <meta name="description" content="${metaDesc}"/>
@@ -232,7 +234,7 @@ ${ogMeta.length ? '    ' + ogMeta.join('\n    ') + '\n' : ''}${twMeta.length ? '
 ${schema ? '    ' + schema + '\n' : ''}
     <!-- Critical CSS -->
     <style id="critical-css">${critCss}
-.sec_hmbanner{position:relative;overflow:hidden}.sec_hmbanner .ban_desk{display:block;width:100%;height:auto;aspect-ratio:1920/868}.sec_hmbanner picture{display:block;line-height:0}.sec_enquire{contain:layout style}.enquire_wrap{display:flex;flex-wrap:wrap;margin:-201px 88px 0;background:#fff}.sec_enquire .enquire_wrap{will-change:auto}@media(max-width:1550px){.enquire_wrap{margin:-180px 0 0}}@media(max-width:1199px){.sec_enquire{padding:60px 0 0;background:#F3F8FE}.enquire_wrap{margin:-270px auto 0;max-width:800px;flex-direction:column}}@media(max-width:575px){.sec_enquire{padding:40px 0 0}.enquire_wrap{margin:-250px auto 0}}@media(max-width:420px){.enquire_wrap{margin:-170px auto 0}}@media(max-width:350px){.enquire_wrap{margin:-110px auto 0}}.headbrand img,.headbrand picture{display:block}.headbrand a{display:block;width:172px;height:71px}img{content-visibility:auto}.js_hmbanner>li{position:relative}.js_hmbanner>li::before{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background-image:linear-gradient(175deg,rgb(0 0 0/90%) 12%,transparent 90%);z-index:1;pointer-events:none}.ol_hmbanner{z-index:2}@media(max-width:1550px){.js_hmbanner>li>picture{position:absolute;top:0;left:0;right:0;bottom:0;width:100%;height:100%;z-index:-1}.js_hmbanner>li>picture>img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:-1}}.sec_inbanner::before{top:0;left:0;z-index:1;pointer-events:none}.sec_inbanner .container{z-index:2;position:relative}</style>
+.sec_hmbanner{position:relative;overflow:hidden;z-index:0}.sec_hmbanner .ban_desk{display:block;width:100%;height:auto;aspect-ratio:1920/868;content-visibility:visible}.sec_hmbanner picture{display:block;line-height:0}.sec_enquire{contain:layout style;position:relative;z-index:3}.enquire_wrap{display:flex;flex-wrap:wrap;margin:-201px 88px 0;background:#fff;min-height:200px}.enquire_box{width:calc(100% - 384px);padding:35px 42px 30px}.enquire_head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;margin:0 0 17px}.enquire_title{font-size:22px;font-weight:600;color:#153764;text-transform:uppercase}.enquire_text{font-size:14px}.form_enquire{display:flex;flex-wrap:wrap;align-items:center;margin:0 -10px}.form_enquire .formgroup{margin-bottom:0;padding:0 10px;width:21.2%}.form_enquire .formcontrol,.form_enquire .submit_block,.form_enquire .submit_block [class*="btn_"]{height:46px;min-height:auto;margin:0}.form_enquire .formcontrol{width:100%;padding:11px 16px;font-size:14px;border:1px solid #D7E1EC;background:transparent;color:#373737;font-family:'Poppins'}.form_enquire .submit_block{padding:0 10px;width:15%}.cat_box{width:384px;background:#F3F8FE;display:flex;flex-wrap:wrap;align-items:center;justify-content:center}.cat_list{display:flex;flex-wrap:wrap}.cat_list li{padding:0 35px}.cat_list li:not(:last-child){border-right:1px solid rgb(21 55 100/10%)}.cat_item{text-align:center;height:100%;display:flex;flex-direction:column;flex-wrap:wrap;align-items:center;justify-content:flex-end}.cat_item>img{max-width:70px;margin:0 0 20px}@media(max-width:1550px){.sec_enquire .container{max-width:100%!important}.enquire_wrap{margin:-180px 0 0}.enquire_box{width:calc(100% - 338px);padding:26px}.cat_box{width:338px}.cat_list li{padding:0 20px}}@media(max-width:1439px){.cat_box{width:280px}.enquire_box{width:calc(100% - 280px)}}@media(max-width:1199px){.sec_enquire{padding:60px 0 0;background:#F3F8FE}.enquire_wrap{margin:-270px auto 0;max-width:800px;flex-direction:column;box-shadow:0 0 6px rgb(154 154 154/16%)}.enquire_box{width:100%}.form_enquire .formgroup{width:50%;margin:0 0 20px}.form_enquire .submit_block{width:100%}.cat_box{width:100%;padding:0 26px 26px;background:#fff}.cat_list{width:100%}.cat_list li{width:50%}}@media(max-width:575px){.sec_enquire{padding:40px 0 0}.enquire_wrap{margin:-250px auto 0}.form_enquire .formgroup{width:100%}.enquire_head{flex-direction:column}.enquire_text{margin:5px 0 0}}@media(max-width:420px){.enquire_wrap{margin:-170px auto 0}.enquire_box{padding:26px 20px}.cat_list li{padding:0 10px}.cat_item>img{max-width:60px}.cat_box{padding:0 20px 26px}}@media(max-width:350px){.enquire_wrap{margin:-110px auto 0}}.headbrand img,.headbrand picture{display:block}.headbrand a{display:block;width:172px;height:71px}.headbrand img{width:172px;height:71px}@media(max-width:1550px){.headbrand a{width:150px;height:62px}.headbrand img{width:150px;height:62px}}@media(max-width:1300px){.headbrand a{width:125px;height:52px}.headbrand img{width:125px;height:52px}}@media(max-width:1199px){.headbrand a{width:170px;height:70px}.headbrand img{width:170px;height:70px}}@media(max-width:550px){.headbrand a{width:120px;height:50px}.headbrand img{width:120px;height:50px}}img{content-visibility:auto}.animated{animation-duration:1s;animation-fill-mode:both}@keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}.fadeInUp{animation-name:fadeInUp}.js_hmbanner>li{position:relative}.js_hmbanner>li::before{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background-image:linear-gradient(175deg,rgb(0 0 0/90%) 12%,transparent 90%);z-index:1;pointer-events:none}.ol_hmbanner{z-index:2}@media(max-width:1550px){.js_hmbanner>li>picture{position:absolute;top:0;left:0;right:0;bottom:0;width:100%;height:100%;z-index:-1}.js_hmbanner>li>picture>img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:-1}}.sec_inbanner::before{top:0;left:0;z-index:1;pointer-events:none}.sec_inbanner .container{z-index:2;position:relative}</style>
 ${customCss ? '    <style id="custom-css">\n' + customCss + '\n    </style>\n' : ''}
     <!-- Preconnect to critical third-party origins -->
     <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
@@ -242,12 +244,11 @@ ${customCss ? '    <style id="custom-css">\n' + customCss + '\n    </style>\n' :
     <link rel="preload" href="${ap}fonts/Poppins-Regular.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="${ap}fonts/Poppins-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="${ap}fonts/Poppins-Bold.woff2" as="font" type="font/woff2" crossorigin>
-${page.dest === 'index.html' ? `    <link rel="preload" as="image" fetchpriority="high" imagesrcset="${ap}images/bg_banner_desk01.avif 1920w, ${ap}images/bg_banner_desk01-1440w.avif 1440w, ${ap}images/bg_banner_desk01-1024w.avif 1024w, ${ap}images/bg_banner_desk01-768w.avif 768w" imagesizes="100vw" type="image/avif">\n` : `    <link rel="preload" as="image" fetchpriority="high" imagesrcset="${ap}images/bg_inner_banner-768w.avif 768w, ${ap}images/bg_inner_banner-1024w.avif 1024w, ${ap}images/bg_inner_banner-1440w.avif 1440w, ${ap}images/bg_inner_banner.jpg 1920w" imagesizes="100vw">\n`}
+
     <!-- Stylesheets (deferred — critical CSS is inlined above) -->
     <link rel="stylesheet" href="${ap}css/main.css" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="${ap}css/main.css"></noscript>
-    <link rel="stylesheet" href="${ap}css/slick.css" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="${ap}css/animate.css" media="print" onload="this.media='all'">${pageCssLinks}
+    <link rel="stylesheet" href="${ap}css/slick.css" media="print" onload="this.media='all'">${pageCssLinks}
 
     <!-- Google Tag Manager (delayed until browser idle to reduce TBT/LCP impact) -->
     <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-TX1X4Y0L7Y');

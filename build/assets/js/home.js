@@ -1,25 +1,4 @@
 $(document).ready(function () {
-  $('.js_hmbanner').slick({
-    arrows: true,
-    dots: false,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    horizontal: true,
-    infinite: true,
-    autoplay: true,
-    fade: true,
-    pauseOnHover: false,
-    autoplaySpeed: 5000,
-    responsive: [
-      {
-        breakpoint: 601,
-        settings: {
-          arrows: false,
-        }
-			}
-		]
-  });
-  
 
   /*-----GALLERY-----*/
   $('.js_bagallery').slick({
