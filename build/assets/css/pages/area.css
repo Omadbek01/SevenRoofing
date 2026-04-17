@@ -10,6 +10,7 @@
 }
 
 /* Enquire Section */
+.sec_enquire{position:relative;z-index:3}
 .sec_enquire .container{max-width:100%!important}
 .enquire_wrap{display:flex;flex-wrap:wrap;margin:-201px 130px 0;background:#fff}
 .enquire_head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;margin:0 0 17px}
