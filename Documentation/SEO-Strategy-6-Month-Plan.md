@@ -166,9 +166,9 @@ These queries are close to page 1 and represent the biggest ROI opportunity:
 - [x] Fix review snippet structured data on ALL pages (change Service → RoofingContractor)
 - [x] Fix GTM tag order (G-5TKMTRMEZB as primary)
 - [x] Fix CLS issues (font preloading, banner dimension reservations)
-- [ ] Submit fixed pages for reindexing in GSC
-- [ ] Verify structured data in Rich Results Test after deployment
-- [ ] Connect/verify GMB listing links to website
+- [x] Submit fixed pages for reindexing in GSC
+- [x] Verify structured data in Rich Results Test after deployment
+- [x] Connect/verify GMB listing links to website (GMB iframe embedded on contact page)
 
 **Content Optimization (Week 2-4):**
 - [ ] Optimize homepage title/meta for "roof repairs melbourne" and "roof restoration melbourne"
