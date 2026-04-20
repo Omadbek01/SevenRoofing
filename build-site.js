@@ -129,6 +129,7 @@ function processPage(page) {
   const critMatch = html.match(/<style\s+id="rocket-critical-css">([\s\S]*?)<\/style>/);
   let critCss = critMatch ? critMatch[1] : '';
   critCss = fixCssFontPaths(critCss, ap);
+  critCss = critCss.replace(/font-family:'Poppins',sans-serif/g, "font-family:'Poppins','Poppins Fallback',sans-serif");
 
   // --- EXTRACT BODY CONTENT ---
   const bodyClassMatch = html.match(/<body\s+class="([^"]*)"/);
@@ -224,6 +225,19 @@ function processPage(page) {
   for (let i = 0; i < twMeta.length; i++) twMeta[i] = fixWpContentUrl(twMeta[i]);
   if (schema) schema = fixWpContentUrl(schema);
 
+  // Fix review snippet schema: itemReviewed → Review/AggregateRating, Service → RoofingContractor
+  if (schema) {
+    schema = schema.replace(/"@type":"itemReviewed"/g, function(match, offset) {
+      var context = schema.substring(Math.max(0, offset - 60), Math.min(schema.length, offset + 80));
+      if (context.includes('aggregateRating') || context.includes('ratingValue') || context.includes('reviewCount')) return '"@type":"AggregateRating"';
+      return '"@type":"Review"';
+    });
+    schema = schema.replace(/\{"@type":"Service","serviceType":"[^"]*","aggregateRating"/g,
+      '{"@type":"RoofingContractor","name":"Seven Roofing","url":"https://sevenroofing.com.au","aggregateRating"');
+    schema = schema.replace(/\{"@type":"Service","name":"[^"]*","aggregateRating"/g,
+      '{"@type":"RoofingContractor","name":"Seven Roofing","url":"https://sevenroofing.com.au","aggregateRating"');
+  }
+
   // --- BUILD OUTPUT ---
   const output = `<!DOCTYPE html>
 <html lang="en-AU">
@@ -241,7 +255,7 @@ ${ogMeta.length ? '    ' + ogMeta.join('\n    ') + '\n' : ''}${twMeta.length ? '
 ${schema ? '    ' + schema + '\n' : ''}
     <!-- Critical CSS -->
     <style id="critical-css">${critCss}
-.sec_hmbanner{position:relative;overflow:hidden;z-index:0}.sec_hmbanner .ban_desk{display:block;width:100%;height:auto;aspect-ratio:1920/868;content-visibility:visible}.sec_hmbanner picture{display:block;line-height:0}.sec_enquire{position:relative;z-index:3}.enquire_wrap{display:flex;flex-wrap:wrap;margin:-201px 88px 0;background:#fff;min-height:200px}.enquire_box{width:calc(100% - 384px);padding:35px 42px 30px}.enquire_head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;margin:0 0 17px}.enquire_title{font-size:22px;font-weight:600;color:#153764;text-transform:uppercase}.enquire_text{font-size:14px}.form_enquire{display:flex;flex-wrap:wrap;align-items:center;margin:0 -10px}.form_enquire .formgroup{margin-bottom:0;padding:0 10px;width:21.2%}.form_enquire .formcontrol,.form_enquire .submit_block,.form_enquire .submit_block [class*="btn_"]{height:46px;min-height:auto;margin:0}.form_enquire .formcontrol{width:100%;padding:11px 16px;font-size:14px;border:1px solid #D7E1EC;background:transparent;color:#373737;font-family:'Poppins'}.form_enquire .submit_block{padding:0 10px;width:15%}.cat_box{width:384px;background:#F3F8FE;display:flex;flex-wrap:wrap;align-items:center;justify-content:center}.cat_list{display:flex;flex-wrap:wrap}.cat_list li{padding:0 35px}.cat_list li:not(:last-child){border-right:1px solid rgb(21 55 100/10%)}.cat_item{text-align:center;height:100%;display:flex;flex-direction:column;flex-wrap:wrap;align-items:center;justify-content:flex-end}.cat_item>img{max-width:70px;margin:0 0 20px}@media(max-width:1550px){.sec_enquire .container{max-width:100%!important}.enquire_wrap{margin:-180px 0 0}.enquire_box{width:calc(100% - 338px);padding:26px}.cat_box{width:338px}.cat_list li{padding:0 20px}}@media(max-width:1439px){.cat_box{width:280px}.enquire_box{width:calc(100% - 280px)}}@media(max-width:1199px){.sec_enquire{padding:60px 0 0;background:#F3F8FE}.enquire_wrap{margin:-270px auto 0;max-width:800px;flex-direction:column;box-shadow:0 0 6px rgb(154 154 154/16%)}.enquire_box{width:100%}.form_enquire .formgroup{width:50%;margin:0 0 20px}.form_enquire .submit_block{width:100%}.cat_box{width:100%;padding:0 26px 26px;background:#fff}.cat_list{width:100%}.cat_list li{width:50%}}@media(max-width:575px){.sec_enquire{padding:40px 0 0}.enquire_wrap{margin:-250px auto 0}.form_enquire .formgroup{width:100%}.enquire_head{flex-direction:column}.enquire_text{margin:5px 0 0}}@media(max-width:420px){.enquire_wrap{margin:-170px auto 0}.enquire_box{padding:26px 20px}.cat_list li{padding:0 10px}.cat_item>img{max-width:60px}.cat_box{padding:0 20px 26px}}@media(max-width:350px){.enquire_wrap{margin:-110px auto 0}}.headbrand img,.headbrand picture{display:block}.headbrand a{display:block;width:172px;height:71px}.headbrand img{width:172px;height:71px}@media(max-width:1550px){.headbrand a{width:150px;height:62px}.headbrand img{width:150px;height:62px}}@media(max-width:1300px){.headbrand a{width:125px;height:52px}.headbrand img{width:125px;height:52px}}@media(max-width:1199px){.headbrand a{width:170px;height:70px}.headbrand img{width:170px;height:70px}}@media(max-width:550px){.headbrand a{width:120px;height:50px}.headbrand img{width:120px;height:50px}}img{content-visibility:auto}.animated{animation-duration:1s;animation-fill-mode:both}@keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}.fadeInUp{animation-name:fadeInUp}.js_hmbanner>li{position:relative}.js_hmbanner>li::before{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background-image:linear-gradient(175deg,rgb(0 0 0/90%) 12%,transparent 90%);z-index:1;pointer-events:none}.ol_hmbanner{z-index:2}@media(max-width:1550px){.js_hmbanner>li>picture{position:absolute;top:0;left:0;right:0;bottom:0;width:100%;height:100%;z-index:-1}.js_hmbanner>li>picture>img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:-1}.sec_hmbanner .ban_desk{height:100%;aspect-ratio:auto}}.sec_inbanner::before{top:0;left:0;z-index:1;pointer-events:none}.sec_inbanner .container{z-index:2;position:relative}@media(max-width:767px){.ol_hmbanner{min-height:500px;padding-top:30px}ul.bankey_list>li{width:50%;margin:0 0 20px;padding:0}.bankey_item{flex-direction:row}.bankey_item .key_icon{width:40px;margin:0}.bankey_item .key_info{width:calc(100% - 40px);padding-left:15px;text-align:left}.hmban_title{font-size:24px;max-width:100%}}@media(max-width:575px){ul.bankey_list{max-width:450px}.bankey_item .key_icon{width:30px}.bankey_item .key_info{width:calc(100% - 30px);padding-left:10px}}@media(max-width:420px){.ol_hmbanner{min-height:400px;padding-top:35px}.hmban_title{font-size:20px}.bankey_item .key_info{font-size:14px}}@media(max-width:350px){ul.bankey_list{max-width:185px;margin:20px 0 0}ul.bankey_list>li{width:100%;margin:0 0 10px}}</style>
+.sec_hmbanner{position:relative;overflow:hidden;z-index:0}.sec_hmbanner .ban_desk{display:block;width:100%;height:auto;aspect-ratio:1920/868;content-visibility:visible}.sec_hmbanner picture{display:block;line-height:0}.sec_enquire{position:relative;z-index:3}.enquire_wrap{display:flex;flex-wrap:wrap;margin:-201px 88px 0;background:#fff;min-height:200px}.enquire_box{width:calc(100% - 384px);padding:35px 42px 30px}.enquire_head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;margin:0 0 17px}.enquire_title{font-size:22px;font-weight:600;color:#153764;text-transform:uppercase}.enquire_text{font-size:14px}.form_enquire{display:flex;flex-wrap:wrap;align-items:center;margin:0 -10px}.form_enquire .formgroup{margin-bottom:0;padding:0 10px;width:21.2%}.form_enquire .formcontrol,.form_enquire .submit_block,.form_enquire .submit_block [class*="btn_"]{height:46px;min-height:auto;margin:0}.form_enquire .formcontrol{width:100%;padding:11px 16px;font-size:14px;border:1px solid #D7E1EC;background:transparent;color:#373737;font-family:'Poppins'}.form_enquire .submit_block{padding:0 10px;width:15%}.cat_box{width:384px;background:#F3F8FE;display:flex;flex-wrap:wrap;align-items:center;justify-content:center}.cat_list{display:flex;flex-wrap:wrap}.cat_list li{padding:0 35px}.cat_list li:not(:last-child){border-right:1px solid rgb(21 55 100/10%)}.cat_item{text-align:center;height:100%;display:flex;flex-direction:column;flex-wrap:wrap;align-items:center;justify-content:flex-end}.cat_item>img{max-width:70px;margin:0 0 20px}@media(max-width:1550px){.sec_enquire .container{max-width:100%!important}.enquire_wrap{margin:-180px 0 0}.enquire_box{width:calc(100% - 338px);padding:26px}.cat_box{width:338px}.cat_list li{padding:0 20px}}@media(max-width:1439px){.cat_box{width:280px}.enquire_box{width:calc(100% - 280px)}}@media(max-width:1199px){.sec_enquire{padding:60px 0 0;background:#F3F8FE}.enquire_wrap{margin:-270px auto 0;max-width:800px;flex-direction:column;box-shadow:0 0 6px rgb(154 154 154/16%)}.enquire_box{width:100%}.form_enquire .formgroup{width:50%;margin:0 0 20px}.form_enquire .submit_block{width:100%}.cat_box{width:100%;padding:0 26px 26px;background:#fff}.cat_list{width:100%}.cat_list li{width:50%}}@media(max-width:575px){.sec_enquire{padding:40px 0 0}.enquire_wrap{margin:-250px auto 0}.form_enquire .formgroup{width:100%}.enquire_head{flex-direction:column}.enquire_text{margin:5px 0 0}}@media(max-width:420px){.enquire_wrap{margin:-170px auto 0}.enquire_box{padding:26px 20px}.cat_list li{padding:0 10px}.cat_item>img{max-width:60px}.cat_box{padding:0 20px 26px}}@media(max-width:350px){.enquire_wrap{margin:-110px auto 0}}.headbrand img,.headbrand picture{display:block}.headbrand a{display:block;width:172px;height:71px}.headbrand img{width:172px;height:71px}@media(max-width:1550px){.headbrand a{width:150px;height:62px}.headbrand img{width:150px;height:62px}}@media(max-width:1300px){.headbrand a{width:125px;height:52px}.headbrand img{width:125px;height:52px}}@media(max-width:1199px){.headbrand a{width:170px;height:70px}.headbrand img{width:170px;height:70px}}@media(max-width:550px){.headbrand a{width:120px;height:50px}.headbrand img{width:120px;height:50px}}img{content-visibility:auto}.animated{animation-duration:1s;animation-fill-mode:both}@keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}.fadeInUp{animation-name:fadeInUp}.js_hmbanner>li{position:relative}.js_hmbanner>li::before{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background-image:linear-gradient(175deg,rgb(0 0 0/90%) 12%,transparent 90%);z-index:1;pointer-events:none}.ol_hmbanner{z-index:2}@media(max-width:1550px){.js_hmbanner>li>picture{position:absolute;top:0;left:0;right:0;bottom:0;width:100%;height:100%;z-index:-1}.js_hmbanner>li>picture>img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:-1}.sec_hmbanner .ban_desk{height:100%;aspect-ratio:auto}}.sec_inbanner::before{top:0;left:0;z-index:1;pointer-events:none}.sec_inbanner .container{z-index:2;position:relative}@media(max-width:767px){.ol_hmbanner{min-height:500px;padding-top:30px}ul.bankey_list>li{width:50%;margin:0 0 20px;padding:0}.bankey_item{flex-direction:row}.bankey_item .key_icon{width:40px;margin:0}.bankey_item .key_info{width:calc(100% - 40px);padding-left:15px;text-align:left}.hmban_title{font-size:24px;max-width:100%}}@media(max-width:575px){ul.bankey_list{max-width:450px}.bankey_item .key_icon{width:30px}.bankey_item .key_info{width:calc(100% - 30px);padding-left:10px}}@media(max-width:420px){.ol_hmbanner{min-height:400px;padding-top:35px}.hmban_title{font-size:20px}.bankey_item .key_info{font-size:14px}}@media(max-width:350px){ul.bankey_list{max-width:185px;margin:20px 0 0}ul.bankey_list>li{width:100%;margin:0 0 10px}}@font-face{font-family:'Poppins Fallback';src:local('Arial');size-adjust:112.5%;ascent-override:93%;descent-override:28%;line-gap-override:0%}@font-face{font-display:optional;font-family:'FontAwesome';src:url(${ap}fonts/fontawesome-webfont.woff2) format('woff2'),url(${ap}fonts/fontawesome-webfont.woff) format('woff');font-weight:400;font-style:normal}.fa{display:inline-block;font:normal normal normal 14px/1 FontAwesome;font-size:inherit;text-rendering:auto;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}</style>
 ${customCss ? '    <style id="custom-css">\n' + customCss + '\n    </style>\n' : ''}
     <!-- Preconnect to critical third-party origins -->
     <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
@@ -251,15 +265,18 @@ ${customCss ? '    <style id="custom-css">\n' + customCss + '\n    </style>\n' :
     <link rel="preload" href="${ap}fonts/Poppins-Regular.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="${ap}fonts/Poppins-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="${ap}fonts/Poppins-Bold.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="${ap}fonts/fontawesome-webfont.woff2" as="font" type="font/woff2" crossorigin>
 
     <!-- Stylesheets (deferred — critical CSS is inlined above) -->
     <link rel="stylesheet" href="${ap}css/main.css" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="${ap}css/main.css"></noscript>
     <link rel="stylesheet" href="${ap}css/slick.css" media="print" onload="this.media='all'">${pageCssLinks}
 
+    <!-- Google Analytics (GA4 — both properties) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5TKMTRMEZB"></script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-5TKMTRMEZB');gtag('config','G-TX1X4Y0L7Y');</script>
     <!-- Google Tag Manager (deferred until user interaction or 3.5s timeout) -->
-    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-TX1X4Y0L7Y');
-    (function(){var d=false;function l(){if(d)return;d=true;var f=document.getElementsByTagName('script')[0],j=document.createElement('script');j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id=GTM-N2VL4MSD';f.parentNode.insertBefore(j,f)}['scroll','click','touchstart','mousemove','keydown'].forEach(function(e){window.addEventListener(e,l,{once:true,passive:true})});setTimeout(l,3500)})();</script>
+    <script>(function(){var d=false;function l(){if(d)return;d=true;var f=document.getElementsByTagName('script')[0],j=document.createElement('script');j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id=GTM-N2VL4MSD';f.parentNode.insertBefore(j,f)}['scroll','click','touchstart','mousemove','keydown'].forEach(function(e){window.addEventListener(e,l,{once:true,passive:true})});setTimeout(l,3500)})();</script>
 </head>
 <body class="${bodyClass}">
 <script>if(window.location.pathname.endsWith('/index.html'))history.replaceState(null,'',window.location.pathname.replace(/\\/index\\.html$/,'/'));</script>
@@ -534,10 +551,16 @@ function fixContactForm(html, destPath) {
   html = html.replace(/<div\s+class="client-review-sec"[^>]*>[\s\S]*?<\/template><\/pre><div[^>]*data-src[^>]*><\/div>\s*<\/div>\s*<\/div>/g, '<div id="client-reviews"></div>');
   // Fix incorrect review schema types from WP
   html = html.replace(/"@type":"itemReviewed"/g, function(match, offset) {
-    var before = html.substring(Math.max(0, offset - 120), offset);
-    if (before.includes('ratingValue') || before.includes('reviewCount')) return '"@type":"AggregateRating"';
+    var context = html.substring(Math.max(0, offset - 60), Math.min(html.length, offset + 80));
+    if (context.includes('aggregateRating') || context.includes('ratingValue') || context.includes('reviewCount')) return '"@type":"AggregateRating"';
     return '"@type":"Review"';
   });
+
+  // Fix Service type to RoofingContractor for valid review snippets (Google requires LocalBusiness or subtype)
+  html = html.replace(/\{"@type":"Service","serviceType":"[^"]*","aggregateRating"/g,
+    '{"@type":"RoofingContractor","name":"Seven Roofing","url":"https://sevenroofing.com.au","aggregateRating"');
+  html = html.replace(/\{"@type":"Service","name":"[^"]*","aggregateRating"/g,
+    '{"@type":"RoofingContractor","name":"Seven Roofing","url":"https://sevenroofing.com.au","aggregateRating"');
 
   // Remove CF7 wrapper attributes
   html = html.replace(/\s+data-wpcf7-id="[^"]*"/g, '');
@@ -715,8 +738,9 @@ function generate404() {
       .error-page p { font-size: 18px; color: #666; margin-bottom: 30px; max-width: 500px; }
       .error-page .btn_solid_dark { text-decoration: none; }
     </style>
-    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-TX1X4Y0L7Y');
-    (function(){var d=false;function l(){if(d)return;d=true;var f=document.getElementsByTagName('script')[0],j=document.createElement('script');j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id=GTM-N2VL4MSD';f.parentNode.insertBefore(j,f)}['scroll','click','touchstart','mousemove','keydown'].forEach(function(e){window.addEventListener(e,l,{once:true,passive:true})});setTimeout(l,3500)})();</script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5TKMTRMEZB"></script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-5TKMTRMEZB');gtag('config','G-TX1X4Y0L7Y');</script>
+    <script>(function(){var d=false;function l(){if(d)return;d=true;var f=document.getElementsByTagName('script')[0],j=document.createElement('script');j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id=GTM-N2VL4MSD';f.parentNode.insertBefore(j,f)}['scroll','click','touchstart','mousemove','keydown'].forEach(function(e){window.addEventListener(e,l,{once:true,passive:true})});setTimeout(l,3500)})();</script>
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N2VL4MSD"
