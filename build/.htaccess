@@ -1,5 +1,5 @@
 # Seven Roofing - Static Site
-# Generated: 2026-04-20
+# Generated: 2026-04-21
 
 # Force HTTPS
 RewriteEngine On
@@ -36,6 +36,12 @@ RedirectMatch 301 ^/author(.*) https://sevenroofing.com.au/
 # Custom 404
 ErrorDocument 404 /404.html
 
+# MIME types for modern image formats
+<IfModule mod_mime.c>
+    AddType image/avif .avif
+    AddType image/webp .webp
+</IfModule>
+
 # Browser caching
 <IfModule mod_expires.c>
     ExpiresActive On
@@ -52,14 +58,28 @@ ErrorDocument 404 /404.html
     ExpiresByType font/woff "access plus 1 year"
 </IfModule>
 
-# Immutable cache for versioned assets
+# Immutable cache for static assets
 <IfModule mod_headers.c>
     <FilesMatch "\.(css|js|woff2?|png|jpe?g|webp|avif|svg|gif)$">
         Header set Cache-Control "public, max-age=31536000, immutable"
     </FilesMatch>
 </IfModule>
 
-# Gzip compression
+# Vary: Accept on images for AVIF/WebP content negotiation
+<IfModule mod_headers.c>
+    <FilesMatch "\.(jpe?g|png|gif|webp|avif)$">
+        Header append Vary "Accept"
+    </FilesMatch>
+</IfModule>
+
+# Brotli compression (preferred)
+<IfModule mod_brotli.c>
+    AddOutputFilterByType BROTLI_COMPRESS text/html text/css application/javascript
+    AddOutputFilterByType BROTLI_COMPRESS application/json image/svg+xml
+    AddOutputFilterByType BROTLI_COMPRESS font/woff font/woff2
+</IfModule>
+
+# Gzip compression (fallback)
 <IfModule mod_deflate.c>
     AddOutputFilterByType DEFLATE text/html text/css application/javascript
     AddOutputFilterByType DEFLATE application/json image/svg+xml font/woff
