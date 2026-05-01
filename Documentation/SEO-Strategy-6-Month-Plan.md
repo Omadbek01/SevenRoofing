@@ -135,7 +135,7 @@ These queries are close to page 1 and represent the biggest ROI opportunity:
 | Page Speed (Desktop) | ⚠️ 73/100 | CLS 1.04 is critical issue |
 | Image Optimization | ⚠️ Partial | AVIF/WebP used but some images oversized |
 | Font Loading | ⚠️ Issue | Fonts cause CLS — need font-display and preload fixes |
-| GTM/Analytics | ❌ Issue | G-5TKMTRMEZB not firing (Task 2) | //Only one is used at the moment. Leave as is.
+| GTM/Analytics | ✅ Fixed | Old agency GA4 `G-5TKMTRMEZB` removed May 2026. Only `G-TX1X4Y0L7Y` active. |
 | 404 Page | ✅ Pass | Custom 404 page exists |
 | Internal Linking | ⚠️ Could improve | Service pages lack cross-links to location pages |
 | Blog/Content | ❌ Missing | No blog section exists |
@@ -151,7 +151,7 @@ These queries are close to page 1 and represent the biggest ROI opportunity:
 
 1. **CRITICAL — Review Snippet Schema Broken** (All pages): `@type: "Service"` is not valid for review snippets. Must change to `LocalBusiness` or `RoofingContractor`. Also fix `itemReviewed` → `Review` on homepage/about.
 2. **CRITICAL — CLS Score 1.04 on Desktop**: Banner section shifts cause massive CLS. Fonts loading without proper containment.
-3. **HIGH — G-5TKMTRMEZB Not Recording**: Second GA4 property not firing data. //Only one is used at the moment. Leave as is.
+3. ~~**HIGH — G-5TKMTRMEZB Not Recording**~~: Resolved — old agency GA4 removed May 2026. Only `G-TX1X4Y0L7Y` active.
 4. **HIGH — Service Pages Ranking Poorly**: Roof Repairs page has 5,301 impressions but only 3 clicks (position 30). Needs content optimization.
 5. **MEDIUM — No Blog Content**: Missing opportunity for informational keyword capture and internal linking.
 6. **MEDIUM — Missing Location Pages**: Many suburbs with search demand don't have dedicated pages.
@@ -164,7 +164,7 @@ These queries are close to page 1 and represent the biggest ROI opportunity:
 
 **Technical Fixes (Week 1-2):**
 - [x] Fix review snippet structured data on ALL pages (change Service → RoofingContractor)
-- [x] Fix GTM tag order (G-5TKMTRMEZB as primary)
+- [x] Fix GTM tag order (old agency GA4 removed, `G-TX1X4Y0L7Y` is sole GA4 property)
 - [x] Fix CLS issues (font preloading, banner dimension reservations)
 - [x] Submit fixed pages for reindexing in GSC
 - [x] Verify structured data in Rich Results Test after deployment
@@ -367,8 +367,7 @@ Each new suburb page should follow this exact structure:
 ## 6. Technical Implementation Notes
 
 ### 6.1 GTM Configuration
-- **Primary GA4:** G-5TKMTRMEZB (active for current month)
-- **Secondary GA4:** G-TX1X4Y0L7Y (important from next month)
+- **GA4:** G-TX1X4Y0L7Y (sole active property — old agency `G-5TKMTRMEZB` removed May 2026)
 - **GTM Container:** GTM-N2VL4MSD
 - Both GA4 properties should fire on all pages
 
@@ -459,8 +458,7 @@ Seven Roofing's competitive advantages:
 
 | Item | Status | Notes |
 |------|--------|-------|
-| GA4 primary (G-5TKMTRMEZB) | FIXED | Now loaded first with async gtag.js script |
-| GA4 secondary (G-TX1X4Y0L7Y) | FIXED | Configured as second gtag('config') call |
+| GA4 (G-TX1X4Y0L7Y) | FIXED | Sole GA4 property, deferred loading on all pages |
 | GTM container (GTM-N2VL4MSD) | PASS | Deferred loading (user interaction or 3.5s timeout) |
 | Phone click tracking | PASS | dataLayer push + gtag event on tel: link clicks |
 
